@@ -1,4 +1,5 @@
 ![Build status](https://travis-ci.org/bodastage/boda-bulkcmparser.svg?branch=master)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbodastage%2Fboda-bulkcmparser.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbodastage%2Fboda-bulkcmparser?ref=badge_shield)
 
 # boda-bulkcmparser
 XML to csv parser for 3GPP Bulk CM data files as defined by ETSI TS 132 615.
@@ -27,3 +28,6 @@ For any other concerns apart from issues and feature requests, send an email to 
 This project is licensed under Apache 2.0. See LICENCE file for details.
 
 
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fbodastage%2Fboda-bulkcmparser.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fbodastage%2Fboda-bulkcmparser?ref=badge_large)
