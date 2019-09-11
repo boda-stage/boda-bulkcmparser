@@ -723,6 +723,11 @@ public class BodaBulkCMParser {
         if (isRegularExecutableFile) {
             this.setFileName(this.dataSource);
             baseFileName =  getFileBasename(this.dataFile);
+            try {
+                dateTime = Files.getLastModifiedTime(file).toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             if( parserState == ParserStates.EXTRACTING_PARAMETERS){
                 System.out.print("Extracting parameters from " + this.baseFileName + "...");
             }else{
@@ -1771,6 +1776,8 @@ public class BodaBulkCMParser {
         if (s.contains("\"")) {
             csvValue = "\"" + s.replace("\"", "\"\"") + "\"";
         }
+
+        csvValue = csvValue.trim();
 
         return csvValue;
     }
