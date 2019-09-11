@@ -723,6 +723,7 @@ public class BodaBulkCMParser {
         if (isRegularExecutableFile) {
             this.setFileName(this.dataSource);
             baseFileName =  getFileBasename(this.dataFile);
+            //in case of empty datetime
             try {
                 dateTime = Files.getLastModifiedTime(file).toString();
             } catch (IOException e) {
@@ -761,6 +762,12 @@ public class BodaBulkCMParser {
                 this.setFileName(f.getAbsolutePath());
                 try {
                     baseFileName =  getFileBasename(this.dataFile);
+                    //in case of empty datetime
+                    try {
+                        dateTime = Files.getLastModifiedTime(file).toString();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     if( parserState == ParserStates.EXTRACTING_PARAMETERS){
                         System.out.print("Extracting parameters from " + this.baseFileName + "...");
                     }else{
@@ -1387,7 +1394,7 @@ public class BodaBulkCMParser {
      * Save a values for Three GPP attribute values .
      * 
      * This should be called at the end of </attributes>
-     * @param String mo 
+     * @param string mo
      */
     private void saveThreeGPPAttrValues(String mo){
         
