@@ -7,37 +7,20 @@
  */
 package com.bodastage.boda_bulkcmparser;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.logging.Level;
+import org.apache.commons.cli.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.Characters;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.xml.stream.events.*;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class BodaBulkCMParser {
 
@@ -46,7 +29,7 @@ public class BodaBulkCMParser {
      * 
      * Since 1.3.0
      */
-    final static String VERSION = "2.2.0";
+    final static String VERSION = "2.2.1";
     
     
     private static final Logger LOGGER = LoggerFactory.getLogger(BodaBulkCMParser.class);
@@ -581,16 +564,16 @@ public class BodaBulkCMParser {
        
         try{
             
-            if(showVersion == true ){
+            if(showVersion){
                 System.out.println(VERSION);
                 System.out.println("Copyright (c) 2019 Bodastage Solutions(https://www.bodastage.com)");
                 System.exit(0);
             }
             
             //show help
-            if( showHelpMessage == true || 
+            if(showHelpMessage ||
                 inputFile == null || 
-                ( outputDirectory == null && onlyExtractParameters == false) ){
+                ( outputDirectory == null && !onlyExtractParameters) ){
                      HelpFormatter formatter = new HelpFormatter();
                      String header = "Parses BulkCM configuration data file XML to csv\n\n";
                      String footer = "\n";
@@ -723,6 +706,12 @@ public class BodaBulkCMParser {
         if (isRegularExecutableFile) {
             this.setFileName(this.dataSource);
             baseFileName =  getFileBasename(this.dataFile);
+            //in case of empty datetime
+            try {
+                dateTime = Files.getLastModifiedTime(file).toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             if( parserState == ParserStates.EXTRACTING_PARAMETERS){
                 System.out.print("Extracting parameters from " + this.baseFileName + "...");
             }else{
@@ -756,6 +745,12 @@ public class BodaBulkCMParser {
                 this.setFileName(f.getAbsolutePath());
                 try {
                     baseFileName =  getFileBasename(this.dataFile);
+                    //in case of empty datetime
+                    try {
+                        dateTime = Files.getLastModifiedTime(file).toString();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     if( parserState == ParserStates.EXTRACTING_PARAMETERS){
                         System.out.print("Extracting parameters from " + this.baseFileName + "...");
                     }else{
@@ -1382,7 +1377,7 @@ public class BodaBulkCMParser {
      * Save a values for Three GPP attribute values .
      * 
      * This should be called at the end of </attributes>
-     * @param String mo 
+     * @param string mo
      */
     private void saveThreeGPPAttrValues(String mo){
         
@@ -1771,6 +1766,8 @@ public class BodaBulkCMParser {
         if (s.contains("\"")) {
             csvValue = "\"" + s.replace("\"", "\"\"") + "\"";
         }
+
+        csvValue = csvValue.trim();
 
         return csvValue;
     }
