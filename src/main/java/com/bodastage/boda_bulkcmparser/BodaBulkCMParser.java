@@ -564,17 +564,16 @@ public class BodaBulkCMParser {
        
         try{
             
-            if(showVersion == true ){
+            if(showVersion){
                 System.out.println(VERSION);
                 System.out.println("Copyright (c) 2019 Bodastage Solutions(https://www.bodastage.com)");
-                System.out.println("Modification (c) 2019 by Aleksei Ivantsov");
                 System.exit(0);
             }
             
             //show help
-            if( showHelpMessage == true || 
+            if(showHelpMessage ||
                 inputFile == null || 
-                ( outputDirectory == null && onlyExtractParameters == false) ){
+                ( outputDirectory == null && !onlyExtractParameters) ){
                      HelpFormatter formatter = new HelpFormatter();
                      String header = "Parses BulkCM configuration data file XML to csv\n\n";
                      String footer = "\n";
@@ -584,7 +583,6 @@ public class BodaBulkCMParser {
                      footer += "java -jar boda-bulkcmparser.jar -i input_folder -p\n";
                      footer += "java -jar boda-bulkcmparser.jar -i input_folder -p -m\n";
                      footer += "\nCopyright (c) 2019 Bodastage Solutions(https://www.bodastage.com)";
-                     footer += "\nModification (c) 2019 by Aleksei Ivantsov";
                      formatter.printHelp( "java -jar boda-bulkcmparser.jar", header, options, footer );
                      System.exit(0);
             }
