@@ -446,6 +446,7 @@ public class BodaBulkCMParser {
     public void parseFile(String inputFilename) throws FileNotFoundException, XMLStreamException, UnsupportedEncodingException {
 
         XMLInputFactory factory = XMLInputFactory.newInstance();
+        factory.setProperty(XMLInputFactory.IS_COALESCING, true);
 
         XMLEventReader eventReader = factory.createXMLEventReader(
                 new FileReader(inputFilename));
