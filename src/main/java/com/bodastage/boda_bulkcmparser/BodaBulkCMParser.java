@@ -1599,7 +1599,6 @@ public class BodaBulkCMParser {
         }
 
         pw = outputVsDataTypePWMap.get(csvFileName);
-        System.out.println(paramValues);
         pw.println(paramValues);
 
     }
